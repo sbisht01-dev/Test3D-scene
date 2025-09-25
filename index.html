@@ -11,6 +11,11 @@
             height: 100vh;
             position: relative;
         }
+        canvas { /* Style the canvas directly */
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
         #controls {
             position: absolute;
             bottom: 20px;
@@ -18,7 +23,7 @@
             transform: translateX(-50%);
             display: flex;
             gap: 10px;
-            z-index: 10; /* Ensure buttons are above the scene */
+            z-index: 10;
         }
         .control-button {
             padding: 10px 20px;
@@ -30,26 +35,19 @@
             border-radius: 5px;
         }
     </style>
-    <script type="module" src="https://unpkg.com/@splinetool/viewer@1.10.70/build/spline-viewer.js"></script>
-</head>
+    </head>
 <body>
     <div id="spline-container">
-        <spline-viewer id="spline-scene" url="https://prod.spline.design/h-uXRz4tG5eQsGgf/scene.splinecode"></spline-viewer>
+        <canvas id="spline-canvas"></canvas>
     </div>
 
     <div id="controls">
-        <button class="control-button" onclick="moveTruck('truck', 'forward')">Truck A: Forward</button>
-        <button class="control-button" onclick="moveTruck('truck', 'backward')">Truck A: Backward</button>
-        <button class="control-button" onclick="moveTruck('TruckB', 'left')">Truck B: Left</button>
-        <button class="control-button" onclick="moveTruck('TruckB', 'right')">Truck B: Right</button>
+        <button class="control-button" onclick="moveTruck('truck1', 'forward')">Truck A: Forward</button>
+        <button class="control-button" onclick="moveTruck('truck1', 'backward')">Truck A: Backward</button>
+        <button class="control-button" onclick="moveTruck('truck1', 'left')">Truck B: Left</button>
+        <button class="control-button" onclick="moveTruck('truck1', 'right')">Truck B: Right</button>
     </div>
 
-    <script src="script.js"></script>
+    <script type="module" src="script.js"></script>
 </body>
 </html>
-
-
-<!-- 
-<script type="module" src="https://unpkg.com/@splinetool/viewer@1.10.70/build/spline-viewer.js"></script>
-<spline-viewer url="https://prod.spline.design/h-uXRz4tG5eQsGgf/scene.splinecode"></spline-viewer>
- -->
