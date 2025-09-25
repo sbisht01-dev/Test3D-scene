@@ -1,74 +1,83 @@
+// KEY CHANGE: Import from the '@splinetool/runtime' package, not the 'viewer'.
+import { Application } from 'https://unpkg.com/@splinetool/runtime@1.8.2/build/runtime.js';
+
 // Configuration for movement
 const MOVEMENT_STEP = 50; 
-const TRUCK_NAME_A = "truck"; 
-const TRUCK_NAME_B = "truck 2"; 
 
-// Get the element
-const splineViewer = document.getElementById('spline-scene');
+// Get the necessary elements
+const canvas = document.getElementById('spline-canvas');
 const controls = document.getElementById('controls');
 
-// Initially disable controls until the scene is ready
-if (controls) {
-    controls.style.pointerEvents = 'none'; // Disable button clicks
-    controls.style.opacity = '0.5'; // Visually indicate they are disabled
-}
+// This will hold our Spline application instance
+let spline; 
 
 /**
  * Moves a specified truck object in a given direction.
- * (Defined globally for the HTML onclick to work)
+ * (Attached to the window object to be accessible by HTML onclick)
  */
-window.moveTruck = async function(objectName, direction) {
-    // This check handles cases where the button is clicked before load, 
-    // although the load listener should prevent the user from clicking.
-    if (!splineViewer || !splineViewer.spline) {
-        console.warn('Spline API not initialized yet. Controls are still loading.');
+window.moveTruck = function(objectName, direction) {
+    if (!spline) {
+        console.warn('Spline app is not ready yet.');
+        return;
+    }
+    
+    const truck = spline.findObjectByName(objectName);
+
+    if (!truck) {
+        console.error(`Object '${objectName}' NOT FOUND. Check the name in the Spline editor!`);
         return;
     }
 
-    try {
-        const truck = await splineViewer.spline.findObjectByName(objectName);
+    const currentPosition = truck.position;
+    let newPosition = { ...currentPosition }; // Create a copy
 
-        if (!truck) {
-            console.error(`Object '${objectName}' NOT FOUND. Check the name in Spline!`);
-            return;
-        }
-
-        const currentPosition = truck.position;
-        let newPosition = { ...currentPosition };
-
-        switch (direction) {
-            case 'forward': 
-                newPosition.z -= MOVEMENT_STEP; 
-                break;
-            case 'backward': 
-                newPosition.z += MOVEMENT_STEP;
-                break;
-            case 'left': 
-                newPosition.x -= MOVEMENT_STEP;
-                break;
-            case 'right': 
-                newPosition.x += MOVEMENT_STEP;
-                break;
-        }
-
-        splineViewer.spline.setObjectPosition(objectName, newPosition, 200);
-
-    } catch (error) {
-        console.error('Error moving truck:', error);
+    switch (direction) {
+        case 'forward': 
+            newPosition.z -= MOVEMENT_STEP; 
+            break;
+        case 'backward': 
+            newPosition.z += MOVEMENT_STEP;
+            break;
+        case 'left': 
+            newPosition.x -= MOVEMENT_STEP;
+            break;
+        case 'right': 
+            newPosition.x += MOVEMENT_STEP;
+            break;
     }
+    
+    // Animate the position by directly setting the new values
+    truck.position.x = newPosition.x;
+    truck.position.y = newPosition.y;
+    truck.position.z = newPosition.z;
 };
 
-// --- API Ready Check ---
-if (splineViewer) {
-    splineViewer.addEventListener('load', () => {
-        console.log('Spline scene loaded. Ready to move trucks! Controls enabled.');
-        
-        // 🌟 FIX: Enable the controls ONLY when the scene is fully loaded
-        if (controls) {
-            controls.style.pointerEvents = 'auto'; // Re-enable button clicks
-            controls.style.opacity = '1.0'; // Restore visual look
-        }
-    });
-} else {
-    console.error('Spline viewer element not found.');
+/**
+ * Main function to initialize and load the Spline scene.
+ */
+async function main() {
+    // Initially disable controls
+    if (controls) {
+        controls.style.pointerEvents = 'none';
+        controls.style.opacity = '0.5';
+    }
+
+    // Start the Spline application
+    spline = new Application(canvas);
+
+    // Load the scene and wait for it to be ready
+    await spline.load('https://prod.spline.design/h-uXRz4tG5eQsGgf/scene.splinecode');
+    
+    console.log('Spline scene loaded successfully. Controls enabled.');
+
+    // Enable the controls now that the scene is fully loaded
+    if (controls) {
+        controls.style.pointerEvents = 'auto';
+        controls.style.opacity = '1.0';
+    }
 }
+
+// Run the main initialization function
+main();
+
+{/* <script type="module" src="https://unpkg.com/@splinetool/viewer@1.10.70/build/spline-viewer.js"></script> */}
