@@ -2,14 +2,14 @@
 import { Application } from 'https://unpkg.com/@splinetool/runtime@1.8.2/build/runtime.js';
 
 // Configuration for movement
-const MOVEMENT_STEP = 50; 
+const MOVEMENT_STEP = 50;
 
 // Get the necessary elements
 const canvas = document.getElementById('spline-canvas');
 const controls = document.getElementById('controls');
 
 // This will hold our Spline application instance
-let spline; 
+let spline;
 
 /**
  * Moves a specified truck object in a given direction.
@@ -20,7 +20,7 @@ window.moveTruck = function(objectName, direction) {
         console.warn('Spline app is not ready yet.');
         return;
     }
-    
+
     const truck = spline.findObjectByName(objectName);
 
     if (!truck) {
@@ -32,20 +32,20 @@ window.moveTruck = function(objectName, direction) {
     let newPosition = { ...currentPosition }; // Create a copy
 
     switch (direction) {
-        case 'forward': 
-            newPosition.z -= MOVEMENT_STEP; 
-            break;
-        case 'backward': 
+        case 'forward':
             newPosition.z += MOVEMENT_STEP;
             break;
-        case 'left': 
+        case 'backward':
+            newPosition.z -= MOVEMENT_STEP;
+            break;
+        case 'left':
             newPosition.x -= MOVEMENT_STEP;
             break;
-        case 'right': 
+        case 'right':
             newPosition.x += MOVEMENT_STEP;
             break;
     }
-    
+
     // Animate the position by directly setting the new values
     truck.position.x = newPosition.x;
     truck.position.y = newPosition.y;
@@ -66,8 +66,8 @@ async function main() {
     spline = new Application(canvas);
 
     // Load the scene and wait for it to be ready
-    await spline.load('https://prod.spline.design/h-uXRz4tG5eQsGgf/scene.splinecode');
-    
+    await spline.load('https://prod.spline.design/v836K8YKFoMZH92G/scene.splinecode');
+
     console.log('Spline scene loaded successfully. Controls enabled.');
 
     // Enable the controls now that the scene is fully loaded
@@ -79,5 +79,3 @@ async function main() {
 
 // Run the main initialization function
 main();
-
-{/* <script type="module" src="https://unpkg.com/@splinetool/viewer@1.10.70/build/spline-viewer.js"></script> */}
