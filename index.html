@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spline Truck Controller</title>
+    <style>
+        body { margin: 0; overflow: hidden; font-family: sans-serif; }
+        #spline-container {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+        #controls {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 10; /* Ensure buttons are above the scene */
+        }
+        .control-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+    </style>
+    <script type="module" src="https://unpkg.com/@splinetool/viewer@1.10.70/build/spline-viewer.js"></script>
+</head>
+<body>
+    <div id="spline-container">
+        <spline-viewer id="spline-scene" url="https://prod.spline.design/h-uXRz4tG5eQsGgf/scene.splinecode"></spline-viewer>
+    </div>
+
+    <div id="controls">
+        <button class="control-button" onclick="moveTruck('truck', 'forward')">Truck A: Forward</button>
+        <button class="control-button" onclick="moveTruck('truck', 'backward')">Truck A: Backward</button>
+        <button class="control-button" onclick="moveTruck('TruckB', 'left')">Truck B: Left</button>
+        <button class="control-button" onclick="moveTruck('TruckB', 'right')">Truck B: Right</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
+
+<!-- 
+<script type="module" src="https://unpkg.com/@splinetool/viewer@1.10.70/build/spline-viewer.js"></script>
+<spline-viewer url="https://prod.spline.design/h-uXRz4tG5eQsGgf/scene.splinecode"></spline-viewer>
+ -->
